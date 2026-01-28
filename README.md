@@ -4,7 +4,6 @@
 <img width="1853" height="1047" alt="image" src="https://github.com/user-attachments/assets/67c87866-2e9b-4a61-bc67-61ad2cf0c88e" />
 <img width="1871" height="1106" alt="image" src="https://github.com/user-attachments/assets/fb82c69c-42d1-4b58-bc8f-778ba987e809" />
 <img width="1878" height="1138" alt="image" src="https://github.com/user-attachments/assets/3f753804-dfa4-4dce-9776-6ed038826745" />
-<img width="1853" height="1047" alt="image" src="https://github.com/user-attachments/assets/7c87d761-c796-4566-9933-20ddf1169702" />
 
 ## ⚠️ 重要说明（必读）
 1. **路径配置**：
