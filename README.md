@@ -1,4 +1,4 @@
-# Lora-Manager
+<img width="1853" height="1047" alt="image" src="https://github.com/user-attachments/assets/67c87866-2e9b-4a61-bc67-61ad2cf0c88e" /># Lora-Manager
 这是管理SD绘图中多种多样的Lora的一个项目，用gemini+Trae Auto Mode在4小时内开发完成，之后可能会完善和长期使用。使用NodeJS为后端，PureJS为前端。
 个基于 NodeJS 的本地 LoRA 模型管理小工具。
 ## ⚠️ 重要说明（必读）
@@ -16,3 +16,6 @@
 2.启动程序： 双击运行 startLoraManager.cmd 或在终端执行：
   ```bash
   node server.js
+<img width="1871" height="1106" alt="image" src="https://github.com/user-attachments/assets/fb82c69c-42d1-4b58-bc8f-778ba987e809" />
+<img width="1878" height="1138" alt="image" src="https://github.com/user-attachments/assets/3f753804-dfa4-4dce-9776-6ed038826745" />
+<img width="1853" height="1047" alt="image" src="https://github.com/user-attachments/assets/7c87d761-c796-4566-9933-20ddf1169702" />
