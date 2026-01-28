@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoRA Manager Local</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* 简单的布局补充 */
+        .container {  margin: 0 auto; }
+        .card { background: #252525; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        h2 { margin-top: 0; color: #fff; border-bottom: 1px solid #444; padding-bottom: 10px; }
+        
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; color: #ccc; }
+        input[type="text"] { width: 100%; padding: 8px; background: #111; border: 1px solid #444; color: #fff; border-radius: 4px; }
+        textarea { width: 100%; padding: 8px; background: #111; border: 1px solid #444; color: #fff; border-radius: 4px; resize: vertical; }
+        
+        .primary-btn {
+            background: #4caf50; color: white; border: none; padding: 10px 20px;
+            border-radius: 4px; cursor: pointer; font-size: 16px; width: 100%;
+        }
+        .primary-btn:hover { background: #45a049; }
+        .file-box { border: 2px dashed #444; padding: 20px; text-align: center; color: #888; cursor: pointer; margin-bottom: 10px; }
+        .file-box:hover { border-color: #666; background: #2a2a2a; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <h2>导入 LoRA</h2>
+        
+        <div class="form-group upload-grid">
+            <div id="drop-lora" class="drop-zone">
+                <div class="drop-content">
+                    <span style="font-size: 24px;">📦</span>
+                    <p>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;拖入 LoRA 文件<br><span style="font-size:12px;color:#666;">&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;(.safetensors .ckpt .pt)</span></p>
+                    <div id="lora-file-name" class="file-name-tag"></div>
+                </div>
+                <input type="file" id="file-lora" style="display:none" accept=".safetensors,.pt,.ckpt">
+            </div>
+
+            <div id="drop-preview" class="drop-zone">
+                <div class="drop-content">
+                    <span style="font-size: 24px;">🖼️</span>
+                    <p>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;拖入参考图<br><span style="font-size:12px;color:#666;">&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;(支持多选)</span></p>
+                </div>
+                <div id="preview-thumbs" class="preview-thumbs-container"></div>
+                <input type="file" id="file-preview" multiple accept="image/*" style="display:none">
+            </div>
+        </div>
+
+        <div id="tag-editor-container"></div>
+
+        <div class="form-group" style="margin-top: 20px;">
+            <label>LoRA 名称</label>
+            <input type="text" id="input-lora-name" placeholder="自动填充或手动输入">
+        </div>
+
+        <div class="form-group grid-2-col">
+            <div>
+                <label>🏠 C站 / 来源地址</label>
+                <input type="text" id="input-civitai" placeholder="https://civitai.com/models/...">
+            </div>
+            <div>
+                <label>🪄 激活词 (Trigger Words)</label>
+                <input type="text" id="input-triggers" placeholder="girl, white hair, ... (逗号分隔)">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>📝 备注</label>
+            <textarea id="input-remark" rows="2" placeholder="记录版本信息、推荐权重等..."></textarea>
+        </div>
+
+        <button class="primary-btn" onclick="doImport()">开始导入</button>
+    </div>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top: 40px; border-bottom: 1px solid #444; margin-bottom: 20px;">
+        <h2 style="border:none; margin:0;">我的 LoRA 库</h2>
+        <button class="secondary-btn" onclick="window.app.toggleMultiSelect()">✅ 进入多选模式</button>
+    </div>
+    <div id="library-container"></div>
+</div>
+<div id="action-bar" class="action-bar">
+    <span>已选中 <b id="selected-count">0</b> 个 LoRA</span>
+    <div class="actions">
+        <button onclick="window.app.exportPrompt()">📋 导出提示词</button>
+        <button onclick="window.app.batchDelete()" style="background:#d32f2f;">🗑️ 批量删除</button>
+        <button onclick="window.app.toggleMultiSelect()">❌ 退出多选</button>
+    </div>
+</div>
+<div id="edit-modal" class="modal">
+    <div class="modal-content">
+        <h3>编辑 LoRA 属性</h3>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+            <div>
+                <label style="font-size:12px; color:#888;">C站地址</label>
+                <input type="text" id="edit-civitai" class="filter-input" style="width:100%">
+            </div>
+            <div>
+                <label style="font-size:12px; color:#888;">激活词</label>
+                <input type="text" id="edit-triggers" class="filter-input" style="width:100%">
+            </div>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label style="font-size:12px; color:#888;">备注</label>
+            <textarea id="edit-remark" class="filter-input" style="width:100%; height: 60px;"></textarea>
+        </div>
+
+        <hr style="border-color:#444; margin-bottom:15px;">
+
+        <div id="edit-tag-container"></div>
+        
+        <div class="modal-actions">
+            <button class="secondary-btn" onclick="window.app.closeModal()">取消</button>
+            <button class="primary-btn" onclick="window.app.saveEdit()">💾 保存并移动文件</button>
+        </div>
+    </div>
+</div>
+<script type="module" src="js/app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+{
+  "rootPath": "E:\\LoraData",
+  "tagStats": {
+    "framework": {
+      "history": [
+        "SDXL"
+      ],
+      "frequency": {
+        "SDXL": 14
+      }
+    },
+    "platform": {
+      "history": [
+        "webUI&comfyUI"
+      ],
+      "frequency": {
+        "webUI&comfyUI": 14
+      }
+    },
+    "style": {
+      "history": [
+        "animation_texture",
+        "animation",
+        "animation_loli",
+        "animal"
+      ],
+      "frequency": {
+        "animal": 1,
+        "animation": 9,
+        "animation_loli": 1,
+        "animation_texture": 3
+      }
+    },
+    "others": {
+      "history": [
+        "nsfw",
+        "loli",
+        "touhou",
+        "half_real",
+        "sister"
+      ],
+      "frequency": {
+        "touhou": 10,
+        "loli": 9,
+        "sister": 1,
+        "half_real": 1,
+        "nsfw": 3
+      }
+    }
+  }
+}

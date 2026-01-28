@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>LoRA 导入测试台</h2>
+    <input type="file" id="loraFile" placeholder="LoRA文件"><br><br>
+    <input type="file" id="previewFiles" multiple placeholder="预览图"><br><br>
+    <textarea id="meta" rows="10" cols="50">
+{
+    "name": "test_hareru",
+    "baseTags": {
+        "framework": "SDXL",
+        "platform": "webUI",
+        "style": "animal"
+    },
+    "extraTags": ["high-res"]
+}
+    </textarea><br>
+    <button onclick="upload()">上传测试</button>
+
+    <script>
+        async function upload() {
+            const formData = new FormData();
+            formData.append('loraFile', document.getElementById('loraFile').files[0]);
+            const previews = document.getElementById('previewFiles').files;
+            for(let i=0; i<previews.length; i++) formData.append('previewImages', previews[i]);
+            formData.append('metadata', document.getElementById('meta').value);
+
+            const res = await fetch('/api/import', { method: 'POST', body: formData });
+            const data = await res.json();
+            alert(JSON.stringify(data));
+        }
+    </script>
+</body>
+</html>
