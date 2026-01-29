@@ -17,7 +17,9 @@
    在项目根目录下打开终端，执行：
    ```bash
    npm install
+   ```
 2.启动程序： 双击运行 startLoraManager.cmd 或在终端执行：
   ```bash
   node server.js
+   ```
 3.一个bug是bug，一堆bug能work
